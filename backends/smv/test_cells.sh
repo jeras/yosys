@@ -8,7 +8,7 @@ cd test_cells.tmp
 
 # don't test $mul to reduce runtime
 # don't test $div/$mod/$divfloor/$modfloor to reduce runtime and avoid "div by zero" message
-../../../yosys -p 'test_cell -n 5 -w test all /$alu /$fa /$lcu /$lut /$macc /$mul /$div /$mod /$divfloor /$modfloor'
+../../../yosys -p 'test_cell -n 5 -w test all /$alu /$ha /$fa /$lcu /$lut /$macc /$mul /$div /$mod /$divfloor /$modfloor'
 
 cat > template.txt << "EOT"
 %module main

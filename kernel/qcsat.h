@@ -41,7 +41,7 @@ struct QuickConeSat {
 	// The effort level knobs.
 
 	// The maximum "complexity level" of cells that will be imported.
-	// - 1: bitwise operations, muxes, equality comparisons, lut, sop, fa
+	// - 1: bitwise operations, muxes, equality comparisons, lut, sop, ha, fa
 	// - 2: addition, subtraction, greater/less than comparisons, lcu
 	// - 3: shifts
 	// - 4: multiplication, division, power

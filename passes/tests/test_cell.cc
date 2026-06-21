@@ -136,6 +136,31 @@ static RTLIL::Cell* create_gold_module(RTLIL::Design *design, RTLIL::IdString ce
 		cell->setPort(ID::Y, wire);
 	}
 
+	if (cell_type == ID($ha))
+	{
+		int width = 1 + xorshift32(8 * bloat_factor);
+
+		wire = module->addWire(ID::A);
+		wire->width = width;
+		wire->port_input = true;
+		cell->setPort(ID::A, wire);
+
+		wire = module->addWire(ID::B);
+		wire->width = width;
+		wire->port_input = true;
+		cell->setPort(ID::B, wire);
+
+		wire = module->addWire(ID::X);
+		wire->width = width;
+		wire->port_output = true;
+		cell->setPort(ID::X, wire);
+
+		wire = module->addWire(ID::Y);
+		wire->width = width;
+		wire->port_output = true;
+		cell->setPort(ID::Y, wire);
+	}
+
 	if (cell_type == ID($fa))
 	{
 		int width = 1 + xorshift32(8 * bloat_factor);

@@ -218,6 +218,11 @@ private:
 			y = factory.mux(y, factory.slice(b, a.width() * i, a.width()), factory.slice(s, i, 1));
 		return y;
 	}
+	dict<IdString, Node> handle_ha(Node a, Node b) {
+		Node y = factory.bitwise_xor(a, b);
+		Node x = factory.bitwise_and(a, b);
+		return {{ID(X), x}, {ID(Y), y}};
+	}
 	dict<IdString, Node> handle_fa(Node a, Node b, Node c) {
 		Node t1 = factory.bitwise_xor(a, b);
 		Node t2 = factory.bitwise_and(a, b);
@@ -433,6 +438,8 @@ public:
 			Node s = factory.extend(inputs.at(ID(S)), b_width, false);
 			Node b = factory.mul(s, factory.constant(Const(width, b_width)));
 			return factory.logical_shift_left(a, b);
+		} else if(cellType == ID($ha)) {
+			return handle_ha(inputs.at(ID(A)), inputs.at(ID(B)));
 		} else if(cellType == ID($fa)) {
 			return handle_fa(inputs.at(ID(A)), inputs.at(ID(B)), inputs.at(ID(C)));
 		} else if(cellType == ID($lcu)) {

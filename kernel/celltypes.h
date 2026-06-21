@@ -148,6 +148,7 @@ struct CellTypes
 		setup_type(ID($lcu), {ID::P, ID::G, ID::CI}, {ID::CO}, true);
 		setup_type(ID($alu), {ID::A, ID::B, ID::CI, ID::BI}, {ID::X, ID::Y, ID::CO}, true);
 		setup_type(ID($macc_v2), {ID::A, ID::B, ID::C}, {ID::Y}, true);
+		setup_type(ID($ha), {ID::A, ID::B}, {ID::X, ID::Y}, true);
 		setup_type(ID($fa), {ID::A, ID::B, ID::C}, {ID::X, ID::Y}, true);
 	}
 

@@ -1787,6 +1787,15 @@ namespace {
 				return;
 			}
 
+			if (cell->type == ID($ha)) {
+				port(ID::A, param(ID::WIDTH));
+				port(ID::B, param(ID::WIDTH));
+				port(ID::X, param(ID::WIDTH));
+				port(ID::Y, param(ID::WIDTH));
+				check_expected();
+				return;
+			}
+
 			if (cell->type == ID($fa)) {
 				port(ID::A, param(ID::WIDTH));
 				port(ID::B, param(ID::WIDTH));
@@ -3533,6 +3542,18 @@ RTLIL::Cell* RTLIL::Module::addPow(RTLIL::IdString name, const RTLIL::SigSpec &s
 	return cell;
 }
 
+RTLIL::Cell* RTLIL::Module::addHa(RTLIL::IdString name, const RTLIL::SigSpec &sig_a, const RTLIL::SigSpec &sig_b, const RTLIL::SigSpec &sig_x, const RTLIL::SigSpec &sig_y, const std::string &src)
+{
+	RTLIL::Cell *cell = addCell(name, ID($ha));
+	cell->parameters[ID::WIDTH] = sig_a.size();
+	cell->setPort(ID::A, sig_a);
+	cell->setPort(ID::B, sig_b);
+	cell->setPort(ID::X, sig_x);
+	cell->setPort(ID::Y, sig_y);
+	cell->set_src_attribute(src);
+	return cell;
+}
+
 RTLIL::Cell* RTLIL::Module::addFa(RTLIL::IdString name, const RTLIL::SigSpec &sig_a, const RTLIL::SigSpec &sig_b, const RTLIL::SigSpec &sig_c, const RTLIL::SigSpec &sig_x, const RTLIL::SigSpec &sig_y, const std::string &src)
 {
 	RTLIL::Cell *cell = addCell(name, ID($fa));
@@ -4475,6 +4496,11 @@ void RTLIL::Cell::fixup_parameters(bool set_a_signed, bool set_b_signed)
 
 	if (type == ID($lut) || type == ID($sop)) {
 		parameters[ID::WIDTH] = GetSize(connections_[ID::A]);
+		return;
+	}
+
+	if (type == ID($ha)) {
+		parameters[ID::WIDTH] = GetSize(connections_[ID::Y]);
 		return;
 	}
 

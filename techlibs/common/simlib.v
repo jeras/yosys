@@ -602,6 +602,19 @@ endmodule
 
 // --------------------------------------------------------
 //* group arith
+module \$ha (A, B, X, Y);
+
+parameter WIDTH = 1;
+
+input [WIDTH-1:0] A, B;
+output [WIDTH-1:0] X, Y;
+
+assign Y = A ^ B, X = A & B;
+
+endmodule
+
+// --------------------------------------------------------
+//* group arith
 module \$fa (A, B, C, X, Y);
 
 parameter WIDTH = 1;

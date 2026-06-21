@@ -229,6 +229,27 @@ struct ConstEval
 				set(sig_y, const_demux(sig_a.as_const(), sig_s.as_const()));
 			}
 		}
+		else if (cell->type == ID($ha))
+		{
+			RTLIL::SigSpec sig_x = cell->getPort(ID::X);
+			int width = GetSize(sig_x);
+
+			if (!eval(sig_a, undef, cell))
+				return false;
+
+			if (!eval(sig_b, undef, cell))
+				return false;
+
+			RTLIL::Const val_y = const_xor(sig_a.as_const(), sig_b.as_const(), false, false, width);
+			RTLIL::Const val_x = const_and(sig_a.as_const(), sig_b.as_const(), false, false, width);
+
+			for (int i = 0; i < GetSize(val_y); i++)
+				if (val_y[i] == RTLIL::Sx)
+					val_x.set(i, RTLIL::Sx);
+
+			set(sig_y, val_y);
+			set(sig_x, val_x);
+		}
 		else if (cell->type == ID($fa))
 		{
 			RTLIL::SigSpec sig_c = cell->getPort(ID::C);

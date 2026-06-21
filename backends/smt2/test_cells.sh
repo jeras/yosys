@@ -6,7 +6,7 @@ rm -rf test_cells
 mkdir test_cells
 cd test_cells
 
-../../../yosys -p 'test_cell -muxdiv -w test all /$alu /$macc /$fa /$lcu /$lut /$shift /$shiftx'
+../../../yosys -p 'test_cell -muxdiv -w test all /$alu /$macc /$ha /$fa /$lcu /$lut /$shift /$shiftx'
 
 cat > miter.tpl <<- EOT
 ; #model# (set-option :produce-models true)

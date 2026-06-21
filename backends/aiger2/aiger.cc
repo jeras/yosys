@@ -32,8 +32,8 @@
 USING_YOSYS_NAMESPACE
 PRIVATE_NAMESPACE_BEGIN
 
-#define BITWISE_OPS ID($buf), ID($not), ID($mux), ID($and), ID($or), ID($xor), ID($xnor), ID($fa), \
-					ID($bwmux)
+#define BITWISE_OPS ID($buf), ID($not), ID($mux), ID($and), ID($or), ID($xor), ID($xnor), \
+					ID($ha), ID($fa), ID($bwmux)
 
 #define REDUCE_OPS ID($reduce_and), ID($reduce_or), ID($reduce_xor), ID($reduce_xnor), ID($reduce_bool)
 
@@ -415,6 +415,12 @@ struct Index {
 				} else if (cell->type.in(ID($_NMUX_))) {
 					Lit s = visit(cursor, cell->getPort(ID::S)[obit]);
 					return NOT(MUX(a, b, s));
+				} else if (cell->type.in(ID($ha))) {
+					if (oport == ID::Y) {
+						return XOR(a, b);
+					} else /* oport == ID::X */ {
+						return AND(a, b);
+					}
 				} else if (cell->type.in(ID($fa))) {
 					Lit c = visit(cursor, cell->getPort(ID::C)[obit]);
 					Lit ab = XOR(a, b);

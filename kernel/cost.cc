@@ -34,6 +34,8 @@ static unsigned int y_coef(RTLIL::IdString type)
 		return 4;
 	} else if (type == ID($demux)) {
 		return 2;
+	} else if (type == ID($ha)) {
+		return 3;
 	} else if (type == ID($fa)) {
 		return 5;
 	} else if (type.in(ID($add), ID($sub), ID($alu))) {

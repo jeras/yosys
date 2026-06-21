@@ -126,6 +126,7 @@ struct CellTableBuilder {
 		setup_type(ID($lcu), {ID::P, ID::G, ID::CI}, {ID::CO}, features);
 		setup_type(ID($alu), {ID::A, ID::B, ID::CI, ID::BI}, {ID::X, ID::Y, ID::CO}, features);
 		setup_type(ID($macc_v2), {ID::A, ID::B, ID::C}, {ID::Y}, features);
+		setup_type(ID($ha), {ID::A, ID::B}, {ID::X, ID::Y}, features);
 		setup_type(ID($fa), {ID::A, ID::B, ID::C}, {ID::X, ID::Y}, features);
 	}
 	constexpr void setup_internals_ff()

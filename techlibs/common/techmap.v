@@ -190,6 +190,18 @@ endmodule
 // Arithmetic operators
 // --------------------------------------------------------
 
+(* techmap_celltype = "$ha" *)
+module _90_ha (A, B, X, Y);
+	parameter WIDTH = 1;
+
+	(* force_downto *)
+	input [WIDTH-1:0] A, B;
+	(* force_downto *)
+	output [WIDTH-1:0] X, Y;
+
+	assign Y = A ^ B, X = A & B;
+endmodule
+
 (* techmap_celltype = "$fa" *)
 module _90_fa (A, B, C, X, Y);
 	parameter WIDTH = 1;
