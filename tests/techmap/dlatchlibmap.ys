@@ -17,16 +17,22 @@ EOT
 simplemap
 
 design -save orig
-read_liberty -lib dlatchlibmap.lib
+read_liberty -lib dlatchlibmap_dlatchn.lib dlatchlibmap_dlatchsr_r.lib
 
-equiv_opt -map dlatchlibmap-sim.v -assert -multiclock dfflibmap -liberty dlatchlibmap.lib
-equiv_opt -map dlatchlibmap-sim.v -assert -multiclock dfflibmap -prepare -liberty dlatchlibmap.lib
+equiv_opt -map dlatchlibmap_dlatchn-sim.v -map dlatchlibmap_dlatchsr_r-sim.v -assert -multiclock dfflibmap -prepare  -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_r.lib
 
-dfflibmap -prepare -liberty dlatchlibmap.lib
-equiv_opt -map dlatchlibmap-sim.v -assert -multiclock dfflibmap -map-only -liberty dlatchlibmap.lib
+dfflibmap -prepare -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_r.lib
+equiv_opt -map dlatchlibmap_dlatchn-sim.v -map dlatchlibmap_dlatchsr_r-sim.v -assert -multiclock dfflibmap -map-only -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_r.lib
+
+##################################################################
+# priority clear (Reset)
 
 design -load orig
-dfflibmap -liberty dlatchlibmap.lib
+
+read_liberty -lib dlatchlibmap_dlatchn.lib dlatchlibmap_dlatchsr_r.lib
+equiv_opt -map dlatchlibmap_dlatchn-sim.v -map dlatchlibmap_dlatchsr_r-sim.v -assert -multiclock dfflibmap -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_r.lib
+
+dfflibmap -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_r.lib
 clean
 
 select -assert-count 4 t:$_NOT_
@@ -35,7 +41,7 @@ select -assert-count 4 t:dlatchsr
 select -assert-none t:dlatchn t:dlatchsr t:$_NOT_ %% %n t:* %i
 
 design -load orig
-dfflibmap -prepare -liberty dlatchlibmap.lib
+dfflibmap -prepare -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_r.lib
 
 select -assert-count 9 t:$_NOT_
 select -assert-count 1 t:$_DLATCH_N_
@@ -43,7 +49,7 @@ select -assert-count 4 t:$_DLATCHSR_PPP_
 select -assert-none t:$_DLATCH_N_ t:$_DLATCHSR_PPP_ t:$_NOT_ %% %n t:* %i
 
 design -load orig
-dfflibmap -map-only -liberty dlatchlibmap.lib
+dfflibmap -map-only -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_r.lib
 
 select -assert-count 5 t:$_NOT_
 select -assert-count 0 t:dlatchn
@@ -52,16 +58,6 @@ select -assert-count 1 t:$_DLATCH_P_
 select -assert-count 1 t:$_DLATCH_PP0_
 select -assert-count 1 t:$_DLATCH_PP1_
 select -assert-count 1 t:$_DLATCHSR_NNN_
-
-design -load orig
-dfflibmap -prepare -liberty dlatchlibmap.lib
-dfflibmap -map-only -liberty dlatchlibmap.lib
-clean
-
-select -assert-count 4 t:$_NOT_
-select -assert-count 1 t:dlatchn
-select -assert-count 4 t:dlatchsr
-select -assert-none t:dlatchn t:dlatchsr t:$_NOT_ %% %n t:* %i
 
 design -load orig
 dfflibmap -prepare -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_r.lib
@@ -74,14 +70,123 @@ select -assert-count 4 t:dlatchsr
 select -assert-none t:dlatchn t:dlatchsr t:$_NOT_ %% %n t:* %i
 
 design -load orig
-dfflibmap -liberty dlatchlibmap.lib -dont_use *latchn
+dfflibmap -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_r.lib -dont_use *latchn
 clean
 
 select -assert-count 0 t:dlatchn
 select -assert-count 5 t:dlatchsr
 
+##################################################################
+# priority preset (Set)
+
 design -load orig
-dfflibmap -liberty dlatchlibmap.lib -liberty dlatchlibmap_dlatchsr_mixedpol.lib -dont_use dlatchsr
+
+read_liberty -lib dlatchlibmap_dlatchn.lib dlatchlibmap_dlatchsr_s.lib
+#equiv_opt -map dlatchlibmap_dlatchn-sim.v -map dlatchlibmap_dlatchsr_s-sim.v -assert -multiclock dfflibmap -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_s.lib
+
+dfflibmap -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_s.lib
+clean
+
+select -assert-count 4 t:$_NOT_
+select -assert-count 1 t:dlatchn
+select -assert-count 4 t:dlatchsr
+select -assert-none t:dlatchn t:dlatchsr t:$_NOT_ %% %n t:* %i
+
+#design -load orig
+#dfflibmap -prepare -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_s.lib
+#
+#select -assert-count 9 t:$_NOT_
+#select -assert-count 1 t:$_DLATCH_N_
+#select -assert-count 4 t:$_DLATCHSR_PPP_
+#select -assert-none t:$_DLATCH_N_ t:$_DLATCHSR_PPP_ t:$_NOT_ %% %n t:* %i
+#
+#design -load orig
+#dfflibmap -map-only -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_s.lib
+#
+#select -assert-count 5 t:$_NOT_
+#select -assert-count 0 t:dlatchn
+#select -assert-count 1 t:dlatchsr
+#select -assert-count 1 t:$_DLATCH_P_
+#select -assert-count 1 t:$_DLATCH_PP0_
+#select -assert-count 1 t:$_DLATCH_PP1_
+#select -assert-count 1 t:$_DLATCHSR_NNN_
+#
+#design -load orig
+#dfflibmap -prepare -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_s.lib
+#dfflibmap -map-only -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_s.lib
+#clean
+#
+#select -assert-count 4 t:$_NOT_
+#select -assert-count 1 t:dlatchn
+#select -assert-count 4 t:dlatchsr
+#select -assert-none t:dlatchn t:dlatchsr t:$_NOT_ %% %n t:* %i
+#
+#design -load orig
+#dfflibmap -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_s.lib -dont_use *latchn
+#clean
+#
+#select -assert-count 0 t:dlatchn
+#select -assert-count 5 t:dlatchsr
+
+##################################################################
+# priority undefined
+
+#design -load orig
+#
+#equiv_opt -map dlatchlibmap_dlatchn-sim.v -map dlatchlibmap_dlatchsr_x-sim.v -assert -multiclock dfflibmap -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_x.lib
+#
+#dfflibmap -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_x.lib
+#clean
+#
+#select -assert-count 4 t:$_NOT_
+#select -assert-count 1 t:dlatchn
+#select -assert-count 4 t:dlatchsr
+#select -assert-none t:dlatchn t:dlatchsr t:$_NOT_ %% %n t:* %i
+#
+#design -load orig
+#dfflibmap -prepare -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_x.lib
+#
+#select -assert-count 9 t:$_NOT_
+#select -assert-count 1 t:$_DLATCH_N_
+#select -assert-count 4 t:$_DLATCHSR_PPP_
+#select -assert-none t:$_DLATCH_N_ t:$_DLATCHSR_PPP_ t:$_NOT_ %% %n t:* %i
+#
+#design -load orig
+#dfflibmap -map-only -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_x.lib
+#
+#select -assert-count 5 t:$_NOT_
+#select -assert-count 0 t:dlatchn
+#select -assert-count 1 t:dlatchsr
+#select -assert-count 1 t:$_DLATCH_P_
+#select -assert-count 1 t:$_DLATCH_PP0_
+#select -assert-count 1 t:$_DLATCH_PP1_
+#select -assert-count 1 t:$_DLATCHSR_NNN_
+#
+#design -load orig
+#dfflibmap -prepare -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_x.lib
+#dfflibmap -map-only -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_x.lib
+#clean
+#
+#select -assert-count 4 t:$_NOT_
+#select -assert-count 1 t:dlatchn
+#select -assert-count 4 t:dlatchsr
+#select -assert-none t:dlatchn t:dlatchsr t:$_NOT_ %% %n t:* %i
+#
+#design -load orig
+#dfflibmap -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_x.lib -dont_use *latchn
+#clean
+#
+#select -assert-count 0 t:dlatchn
+#select -assert-count 5 t:dlatchsr
+
+##################################################################
+
+design -load orig
+read_liberty -lib dlatchlibmap_dlatchn.lib dlatchlibmap_dlatchsr_mixedpol.lib
+equiv_opt -map dlatchlibmap_dlatchn-sim.v -map dlatchlibmap_dlatchsr_mixedpol-sim.v -assert -multiclock dfflibmap -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_mixedpol.lib
+
+design -load orig
+dfflibmap -liberty dlatchlibmap_dlatchn.lib -liberty dlatchlibmap_dlatchsr_mixedpol.lib
 clean
 
 # We have one more _NOT_ than with the regular dlatchsr
