@@ -1,34 +1,6 @@
 // Created by cells_xtra.py
 
 
-module LUT5(I0, I1, I2, I3, I4, F);
-parameter INIT = 32'h00000000;
-input I0, I1, I2, I3, I4;
-output F;
-endmodule
-
-
-module LUT6(I0, I1, I2, I3, I4, I5, F);
-parameter INIT = 64'h0000_0000_0000_0000;
-input I0, I1, I2, I3, I4, I5;
-output F;
-endmodule
-
-
-module LUT7(I0, I1, I2, I3, I4, I5, I6, F);
-parameter INIT = 128'h0000_0000_0000_0000_0000_0000_0000_0000;
-input I0, I1, I2, I3, I4, I5, I6;
-output F;
-endmodule
-
-
-module LUT8(I0, I1, I2, I3, I4, I5, I6, I7, F);
-parameter INIT = 256'h0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000;
-input I0, I1, I2, I3, I4, I5, I6, I7;
-output F;
-endmodule
-
-
 module INV(I, O);
 input  I;
 output O;
