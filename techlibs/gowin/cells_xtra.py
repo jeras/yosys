@@ -19,21 +19,21 @@ _skip = { # These are already described, no need to extract them from the vendor
           'DFFNE', 'DFFNP', 'DFFNPE', 'DFFNR', 'DFFNRE', 'DFFNS', 'DFFNSE',
           'DFFP', 'DFFPE', 'DFFR', 'DFFRE', 'DFFS', 'DFFSE', 'DP', 'DPX9',
           'ELVDS_OBUF', 'GND', 'GSR', 'IBUF', 'IDDR', 'IDDRC', 'IDES10',
-          'IDES16', 'IDES4', 'IDES8', 'IOBUF', 'IVIDEO', 'LUT1', 'LUT2',
-          'LUT3', 'LUT4', 'MUX2', 'MUX2_LUT5', 'MUX2_LUT6', 'MUX2_LUT7',
-          'MUX2_LUT8', 'OBUF', 'ODDR', 'ODDRC', 'OSC', 'OSCF', 'OSCH',
-          'OSCO', 'OSCW', 'OSCZ', 'OSER10', 'OSER16', 'OSER10', 'OSER4',
-          'OSER8', 'OVIDEO', 'PLLVR', 'RAM16S1', 'RAM16S2', 'RAM16S4',
-          'RAM16SDP1', 'RAM16SDP2', 'RAM16SDP4', 'rPLL', 'SDP',
+          'IDES16', 'IDES4', 'IDES8', 'IOBUF', 'IVIDEO',
+          'MUX2_LUT5', 'MUX2_LUT6', 'MUX2_LUT7', 'MUX2_LUT8','LUT1', 'LUT2', 'LUT3', 'LUT4',
+          'MUX2_MUX8', 'MUX2_MUX16', 'MUX2_MUX32','MUX2', 'MUX4', 'MUX8', 'MUX16', 'MUX32',
+          'OBUF', 'ODDR', 'ODDRC', 'OSC', 'OSCF', 'OSCH', 'OVIDEO',
+          'OSCO', 'OSCW', 'OSCZ', 'OSER10', 'OSER16', 'OSER8', 'OSER10', 'OSER4',
+          'RAM16S1', 'RAM16S2', 'RAM16S4', 'RAM16SDP1', 'RAM16SDP2', 'RAM16SDP4',
+          'PLLVR', 'rPLL', 'SDP',
           'SDPX9', 'SP', 'SPX9', 'TBUF', 'TLVDS_OBUF', 'VCC', 'EMCU',
           # These are not planned for implementation
-          'MUX2_MUX8', 'MUX2_MUX16', 'MUX2_MUX32', 'MUX4', 'MUX8', 'MUX16',
-          'MUX32', 'DL', 'DLE', 'DLC', 'DLCE', 'DLP', 'DLPE', 'DLN', 'DLNE',
+          'DL', 'DLE', 'DLC', 'DLCE', 'DLP', 'DLPE', 'DLN', 'DLNE',
           'DLNC', 'DLNCE', 'DLNP', 'DLNPE', 'rSDP', 'rSDPX9', 'rROM', 'rROMX9',
           'TLVDS_OEN_BK', 'DLL', 'DCC', 'I3C', 'IODELAYA', 'IODELAYC', 'IODELAYB',
           'SPMI', 'PLLO', 'DCCG', 'MIPI_DPHY_RX', 'CLKDIVG', 'PWRGRD', 'FLASH96KA',
-         # ADCs are in a separate file
-         'ADCLRC', 'ADCULC', 'ADC', 'ADC_SAR', 'ADCA',
+          # ADCs are in a separate file
+          'ADCLRC', 'ADCULC', 'ADC', 'ADC_SAR', 'ADCA',
         }
 def xtract_cells_decl(dir, fout):
     fname = os.path.join(dir, 'prim_sim.v')

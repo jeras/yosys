@@ -250,6 +250,7 @@ struct SynthGowinPass : public ScriptPass
 		if (check_label("begin"))
 		{
 			run("read_verilog -specify -lib +/gowin/cells_sim.v");
+			run("read_verilog -specify -lib +/gowin/cells_cfu.v");
 			run(stringf("read_verilog -specify -lib +/gowin/cells_xtra_%s.v", help_mode ? "<family>" : family));
 			run(stringf("hierarchy -check %s", help_mode ? "-top <top>" : top_opt));
 		}
@@ -316,6 +317,7 @@ struct SynthGowinPass : public ScriptPass
 
 		if (check_label("map_gates"))
 		{
+			run("techmap -map +/gowin/cells_map.v");
 			if (noalu) {
 				run("techmap -map +/techmap.v");
 			} else {
