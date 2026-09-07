@@ -146,47 +146,40 @@ module \$bmux (A, S, Y);
 	parameter WIDTH = 0;
 	parameter S_WIDTH = 0;
 
-	input [(WIDTH << S_WIDTH)-1:0] A;
+	input [WIDTH**S_WIDTH-1:0] A;
 	input [S_WIDTH-1:0] S;
 	output [WIDTH-1:0] Y;
 
-//	parameter WIDTH = 0;
-//	parameter LUT = 0;
+	function [WIDTH-1:0] bitmap (input [WIDTH**S_WIDTH-1:0] V, OFF) begin
+		integer i;
+		for (i=0; i<WIDTH; i++) begin
+			bitmap[i] = V[OFF+i*WIDTH];
+		end
+	end
 
-	(* force_downto *)
-	input [WIDTH-1:0] A;
-	output Y;
-
-	generate case (S_WIDTH)
-		1: begin
-			MUX2 #(.INIT(LUT)) _TECHMAP_REPLACE_ (.F(Y),
-				.I0(A[0]), .I1(A[1]), .I2(A[2]), .I3(A[3]));
-		end else
-		if (WIDTH == 5) begin
-			wire f0, f1;
-			\$lut #(.LUT(LUT[15: 0]), .WIDTH(4)) lut0 (.A(A[3:0]), .Y(f0));
-			\$lut #(.LUT(LUT[31:16]), .WIDTH(4)) lut1 (.A(A[3:0]), .Y(f1));
-			MUX2_LUT5 mux5(.I0(f0), .I1(f1), .S0(A[4]), .O(Y));
-		end else
-		if (WIDTH == 6) begin
-			wire f0, f1;
-			\$lut #(.LUT(LUT[31: 0]), .WIDTH(5)) lut0 (.A(A[4:0]), .Y(f0));
-			\$lut #(.LUT(LUT[63:32]), .WIDTH(5)) lut1 (.A(A[4:0]), .Y(f1));
-			MUX2_LUT6 mux6(.I0(f0), .I1(f1), .S0(A[5]), .O(Y));
-		end else
-		if (WIDTH == 7) begin
-			wire f0, f1;
-			\$lut #(.LUT(LUT[63:  0]), .WIDTH(6)) lut0 (.A(A[5:0]), .Y(f0));
-			\$lut #(.LUT(LUT[127:64]), .WIDTH(6)) lut1 (.A(A[5:0]), .Y(f1));
-			MUX2_LUT7 mux7(.I0(f0), .I1(f1), .S0(A[6]), .O(Y));
-		end else
-		if (WIDTH == 8) begin
-			wire f0, f1;
-			\$lut #(.LUT(LUT[127:  0]), .WIDTH(7)) lut0 (.A(A[6:0]), .Y(f0));
-			\$lut #(.LUT(LUT[255:128]), .WIDTH(7)) lut1 (.A(A[6:0]), .Y(f1));
-			MUX2_LUT8 mux8(.I0(f0), .I1(f1), .S0(A[7]), .O(Y));
-		end else begin
-			wire _TECHMAP_FAIL_ = 1;
+	genvar i;
+	generate
+		for (i=0; i<WIDTH; i=i+1) begin: index
+			wire [WIDTH-1:0] AA;
+			assign AA = bitmap(A, i)
+			case (S_WIDTH)
+				1: MUX2  _TECHMAP_REPLACE_ (.O(Y), .I0 (AA[ 0]), .I1 (AA[ 1]),                             S0(S[0]));
+				2: MUX4  _TECHMAP_REPLACE_ (.O(Y), .I0 (AA[ 0]), .I1 (AA[ 1]), .I2 (AA[ 2]), .I3 (AA[ 3]), S0(S[0]), S1(S[1]));
+				3: MUX8  _TECHMAP_REPLACE_ (.O(Y), .I0 (AA[ 0]), .I1 (AA[ 1]), .I2 (AA[ 2]), .I3 (AA[ 3]), 
+				                                   .I4 (AA[ 4]), .I5 (AA[ 5]), .I6 (AA[ 6]), .I7 (AA[ 7]), S0(S[0]), S1(S[1]), S2(S[2]));
+				4: MUX16 _TECHMAP_REPLACE_ (.O(Y), .I0 (AA[ 0]), .I1 (AA[ 1]), .I2 (AA[ 2]), .I3 (AA[ 3]),
+				                                   .I4 (AA[ 4]), .I5 (AA[ 5]), .I6 (AA[ 6]), .I7 (AA[ 7]),
+				                                   .I8 (AA[ 8]), .I9 (AA[ 9]), .I10(AA[10]), .I11(AA[11]),
+												   .I12(AA[12]), .I13(AA[13]), .I14(AA[14]), .I15(AA[15]), S0(S[0]), S1(S[1]), S2(S[2]), S3(S[3]));
+				5: MUX32 _TECHMAP_REPLACE_ (.O(Y), .I0 (AA[ 0]), .I1 (AA[ 1]), .I2 (AA[ 2]), .I3 (AA[ 3]),
+				                                   .I4 (AA[ 4]), .I5 (AA[ 5]), .I6 (AA[ 6]), .I7 (AA[ 7]),
+				                                   .I8 (AA[ 8]), .I9 (AA[ 9]), .I10(AA[10]), .I11(AA[11]),
+												   .I12(AA[12]), .I13(AA[13]), .I14(AA[14]), .I15(AA[15]),
+												   .I16(AA[16]), .I17(AA[17]), .I18(AA[18]), .I19(AA[19]),
+				                                   .I20(AA[20]), .I21(AA[21]), .I22(AA[22]), .I23(AA[23]),
+				                                   .I24(AA[24]), .I25(AA[25]), .I26(AA[26]), .I27(AA[27]),
+												   .I28(AA[28]), .I29(AA[29]), .I30(AA[30]), .I31(AA[31]), S0(S[0]), S1(S[1]), S2(S[2]), S3(S[3]), S4(S[4]));
+			endcase
 		end
 	endgenerate
 endmodule

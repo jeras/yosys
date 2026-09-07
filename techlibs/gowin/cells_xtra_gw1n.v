@@ -1,12 +1,6 @@
 // Created by cells_xtra.py
 
 
-module INV(I, O);
-input  I;
-output O;
-endmodule
-
-
 module IODELAY(DI, SDTAP, SETN, VALUE, DF, DO);
 parameter C_STATIC_DLY = 0;
 input DI;
