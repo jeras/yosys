@@ -41,6 +41,7 @@ yosys_pass(synth_gowin
 		gowin
 	DATA_FILES
 		cells_map.v
+		cells_cfu.v
 		cells_sim.v
 		cells_latch.v
 		cells_xtra_gw1n.v

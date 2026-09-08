@@ -274,6 +274,7 @@ struct SynthGowinPass : public ScriptPass
 			run("peepopt");
 			run("opt_clean");
 			run("share");
+			run("stat");
 
 			if (help_mode) {
 				run("techmap -map +/mul2dsp.v [...]", "(unless -nodsp and if -family gw1n or gw2a)");
@@ -360,11 +361,13 @@ struct SynthGowinPass : public ScriptPass
 				run("abc9 -maxlut 8 -W 500");
 			}
 			run("clean");
+			run("stat");
 		}
 
 		if (check_label("map_cells"))
 		{
 			run("techmap -map +/gowin/cells_map.v");
+			run("stat");
 			run("opt_lut_ins -tech gowin");
 			if (setundef || help_mode)
 				run("setundef -undriven -params -zero", "(only if -setundef)");
