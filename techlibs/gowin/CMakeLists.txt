@@ -40,14 +40,14 @@ yosys_pass(synth_gowin
 	DATA_DIR
 		gowin
 	DATA_FILES
-		cells_map.v
 		cells_cfu.v
 		cells_sim.v
-		cells_latch.v
 		cells_xtra_gw1n.v
 		cells_xtra_gw2a.v
 		cells_xtra_gw5a.v
 		arith_map.v
+		dff_map.v
+		latch_map.v
 		brams_map.v
 		brams_map_gw5a.v
 		brams.txt
