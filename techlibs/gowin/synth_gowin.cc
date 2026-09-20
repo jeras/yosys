@@ -316,9 +316,14 @@ struct SynthGowinPass : public ScriptPass
 			run("opt -undriven -fine");
 		}
 
+		if (check_label("map_bmux"))
+		{
+			run("techmap -map +/gowin/mux_map.v");
+			run("opt -fast");
+		}
+
 		if (check_label("map_gates"))
 		{
-			run("techmap -map +/gowin/cells_map.v");
 			if (noalu) {
 				run("techmap -map +/techmap.v");
 			} else {
@@ -345,8 +350,8 @@ struct SynthGowinPass : public ScriptPass
 				else
 					run("dfflegalize -cell $_DFF_?_ 0 -cell $_DFFE_?P_ 0 -cell $_SDFF_?P?_ r -cell $_SDFFE_?P?P_ r -cell $_DFF_?P?_ r -cell $_DFFE_?P?P_ r -cell $_DLATCH_?_ x -cell $_DLATCH_?P?_ x");
 			}
-			run("techmap -map +/gowin/cells_map.v");
-			run("techmap -map +/gowin/cells_latch.v");
+			run("techmap -map +/gowin/dff_map.v");
+			run("techmap -map +/gowin/latch_map.v");
 			run("opt_expr -mux_undef");
 			run("simplemap");
 		}
@@ -366,7 +371,7 @@ struct SynthGowinPass : public ScriptPass
 
 		if (check_label("map_cells"))
 		{
-			run("techmap -map +/gowin/cells_map.v");
+			run("techmap -map +/gowin/lut_map.v");
 			run("stat");
 			run("opt_lut_ins -tech gowin");
 			if (setundef || help_mode)
