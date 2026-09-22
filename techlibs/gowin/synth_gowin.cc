@@ -265,8 +265,8 @@ struct SynthGowinPass : public ScriptPass
 			run("tribuf -logic");
 			run("deminout");
 			run("opt_expr");
-			run("opt_clean");
 			run("check");
+			run("opt_clean");
 			run("opt -nodffe -nosdff");
 			run("fsm");
 			run("opt");
@@ -274,8 +274,7 @@ struct SynthGowinPass : public ScriptPass
 			run("peepopt");
 			run("opt_clean");
 			run("share");
-			run("stat");
-			run("stat -width");
+//			run("stat -width");
 
 			if (help_mode) {
 				run("techmap -map +/mul2dsp.v [...]", "(unless -nodsp and if -family gw1n or gw2a)");
@@ -317,11 +316,11 @@ struct SynthGowinPass : public ScriptPass
 			run("opt -undriven -fine");
 		}
 
-		if (check_label("map_bmux"))
-		{
-			run("techmap -map +/gowin/mux_map.v");
-			run("opt -fast");
-		}
+//		if (check_label("map_bmux"))
+//		{
+//			run("techmap -map +/gowin/mux_map.v");
+//			run("opt -fast");
+//		}
 
 		if (check_label("map_gates"))
 		{
@@ -383,15 +382,14 @@ struct SynthGowinPass : public ScriptPass
 				run("abc9 -maxlut 8 -W 500");
 			}
 			run("clean");
-			run("opt -full -share_all");
-			run("stat -width");
+//			run("stat -width");
+//			run("opt -full -share_all");
+//			run("stat -width");
 		}
 
 		if (check_label("map_cells"))
 		{
 			run("techmap -map +/gowin/lut_map.v");
-//			run("opt -full -share_all");
-			run("stat -width");
 			run("opt_lut_ins -tech gowin");
 			if (setundef || help_mode)
 				run("setundef -undriven -params -zero", "(only if -setundef)");
