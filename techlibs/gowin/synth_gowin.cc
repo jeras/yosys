@@ -250,7 +250,7 @@ struct SynthGowinPass : public ScriptPass
 		if (check_label("begin"))
 		{
 			run("read_verilog -specify -lib +/gowin/cells_sim.v");
-			run("read_verilog -specify -lib +/gowin/cells_cfu.v");
+//			run("read_verilog -specify -lib +/gowin/cells_cfu.v");
 			run(stringf("read_verilog -specify -lib +/gowin/cells_xtra_%s.v", help_mode ? "<family>" : family));
 			run(stringf("hierarchy -check %s", help_mode ? "-top <top>" : top_opt));
 		}
@@ -265,8 +265,8 @@ struct SynthGowinPass : public ScriptPass
 			run("tribuf -logic");
 			run("deminout");
 			run("opt_expr");
-			run("check");
 			run("opt_clean");
+			run("check");
 			run("opt -nodffe -nosdff");
 			run("fsm");
 			run("opt");
@@ -275,6 +275,7 @@ struct SynthGowinPass : public ScriptPass
 			run("opt_clean");
 			run("share");
 			run("stat");
+			run("stat -width");
 
 			if (help_mode) {
 				run("techmap -map +/mul2dsp.v [...]", "(unless -nodsp and if -family gw1n or gw2a)");
@@ -353,8 +354,24 @@ struct SynthGowinPass : public ScriptPass
 			run("techmap -map +/gowin/dff_map.v");
 			run("techmap -map +/gowin/latch_map.v");
 			run("opt_expr -mux_undef");
+			run("opt -full -share_all");
 			run("simplemap");
 		}
+
+//		if (check_label("map_mux"))
+//		{
+//			run("stat -width");
+//			run("opt -full -share_all");
+//			run("stat -width");
+//			run("muxcover");
+////			run("muxcover -nodecode -nopartial");
+//			run("opt -full -share_all");
+//			run("stat -width");
+//			run("techmap -map +/gowin/mux_map.v");
+//			run("stat -width");
+//			run("opt -full -share_all");
+//			run("stat -width");
+//		}
 
 		if (check_label("map_luts"))
 		{
@@ -366,13 +383,15 @@ struct SynthGowinPass : public ScriptPass
 				run("abc9 -maxlut 8 -W 500");
 			}
 			run("clean");
-			run("stat");
+			run("opt -full -share_all");
+			run("stat -width");
 		}
 
 		if (check_label("map_cells"))
 		{
 			run("techmap -map +/gowin/lut_map.v");
-			run("stat");
+//			run("opt -full -share_all");
+			run("stat -width");
 			run("opt_lut_ins -tech gowin");
 			if (setundef || help_mode)
 				run("setundef -undriven -params -zero", "(only if -setundef)");
